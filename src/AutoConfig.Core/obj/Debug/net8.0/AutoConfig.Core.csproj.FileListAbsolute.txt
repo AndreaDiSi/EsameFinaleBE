@@ -1,0 +1,11 @@
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\bin\Debug\net8.0\AutoConfig.Core.deps.json
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\bin\Debug\net8.0\AutoConfig.Core.dll
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\bin\Debug\net8.0\AutoConfig.Core.pdb
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.AssemblyInfoInputs.cache
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.AssemblyInfo.cs
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.csproj.CoreCompileInputs.cache
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.dll
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\refint\AutoConfig.Core.dll
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.pdb
+C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\ref\AutoConfig.Core.dll
