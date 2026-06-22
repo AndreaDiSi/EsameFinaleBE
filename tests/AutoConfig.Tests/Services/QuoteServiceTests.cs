@@ -9,7 +9,7 @@ namespace AutoConfig.Tests.Services;
 
 public class QuoteServiceTests
 {
-    private QuoteService CreateSut(out AutoConfig.Infrastructure.Data.AppDbContext db)
+    private static QuoteService CreateSut(out AutoConfig.Infrastructure.Data.AppDbContext db)
     {
         db = TestDbContextFactory.Create();
         return new QuoteService(new QuoteRepository(db), new ConfigurationRepository(db));

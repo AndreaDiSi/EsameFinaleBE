@@ -21,15 +21,15 @@ public record CreateCarModelRequest(
     [Required, MinLength(2)] string Name,
     [Required, MinLength(2)] string Brand,
     [Required] string Category,
-    [Range(0, double.MaxValue)] decimal BasePrice,
+    [Required, Range(0, double.MaxValue)] decimal BasePrice,
     [Required] string Description,
     [Required] string ImageColor);
 
 public record CreateMotorizationRequest(
     [Required] string Name,
     [Required] string FuelType,
-    [Range(1, 2000)] int Power,
-    [Range(1, 2000)] int Torque,
-    [Range(0, 30)] decimal Acceleration,
+    [Required, Range(1, 2000)] int Power,
+    [Required, Range(1, 2000)] int Torque,
+    [Required, Range(0, 30)] decimal Acceleration,
     [Required] string Consumption,
-    [Range(0, double.MaxValue)] decimal Price);
+    [Required, Range(0, double.MaxValue)] decimal Price);

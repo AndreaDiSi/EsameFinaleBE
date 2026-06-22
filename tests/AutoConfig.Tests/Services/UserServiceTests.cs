@@ -9,7 +9,7 @@ namespace AutoConfig.Tests.Services;
 
 public class UserServiceTests
 {
-    private UserService CreateSut(out AutoConfig.Infrastructure.Data.AppDbContext db)
+    private static UserService CreateSut(out AutoConfig.Infrastructure.Data.AppDbContext db)
     {
         db = TestDbContextFactory.Create();
         return new UserService(new UserRepository(db));

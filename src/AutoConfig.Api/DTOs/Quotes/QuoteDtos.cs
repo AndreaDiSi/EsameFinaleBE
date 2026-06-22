@@ -10,10 +10,10 @@ public record QuoteDto(
     string? ConfigurationName = null);
 
 public record CreateQuoteRequest(
-    Guid ConfigurationId,
+    [Required] Guid ConfigurationId,
     [MaxLength(500)] string Notes = "");
 
 public record UpdateQuoteAdminRequest(
     [Required] string Status,
-    [Range(0, 50)] decimal Discount,
+    [Required, Range(0, 50)] decimal Discount,
     [MaxLength(500)] string AdminNotes = "");

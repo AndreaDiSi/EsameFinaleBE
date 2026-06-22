@@ -42,7 +42,7 @@ public class ConfigurationsController(IConfigurationService service) : Controlle
     public async Task<ConfigurationDto> Update(Guid id, UpdateConfigurationRequest req, CancellationToken ct) =>
         (await service.UpdateAsync(
             id, User.GetUserId(), User.IsAdmin(),
-            req.Name, req.ModelId, req.MotorizationId, req.OptionIds, ct)).ToDto();
+            new UpdateConfigurationCommand(req.Name, req.ModelId, req.MotorizationId, req.OptionIds), ct)).ToDto();
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)

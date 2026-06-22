@@ -50,8 +50,7 @@ public class ConfigurationService(
 
     public async Task<VehicleConfiguration> UpdateAsync(
         Guid id, Guid requestingUserId, bool isAdmin,
-        string name, Guid modelId, Guid motorizationId,
-        IEnumerable<Guid> optionIds, CancellationToken ct = default)
+        UpdateConfigurationCommand command, CancellationToken ct = default)
     {
         var config = await configurations.GetWithDetailsAsync(id, ct)
             ?? throw new NotFoundException("Configuration");
@@ -59,12 +58,12 @@ public class ConfigurationService(
         if (!isAdmin && config.UserId != requestingUserId)
             throw new ForbiddenException();
 
-        var (model, motorization, selectedOptions) = await ValidateAndLoad(modelId, motorizationId, optionIds, ct);
+        var (model, motorization, selectedOptions) = await ValidateAndLoad(command.ModelId, command.MotorizationId, command.OptionIds, ct);
         ValidateOptionCompatibility(selectedOptions, motorization.Id);
 
-        config.Name = name;
-        config.ModelId = modelId;
-        config.MotorizationId = motorizationId;
+        config.Name = command.Name;
+        config.ModelId = command.ModelId;
+        config.MotorizationId = command.MotorizationId;
         config.TotalPrice = CalculatePrice(model, motorization, selectedOptions);
         config.UpdatedAt = DateTime.UtcNow;
 

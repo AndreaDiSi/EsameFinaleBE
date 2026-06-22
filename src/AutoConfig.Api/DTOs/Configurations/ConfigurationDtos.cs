@@ -11,12 +11,12 @@ public record ConfigurationDto(
 
 public record CreateConfigurationRequest(
     [Required, MinLength(2), MaxLength(60)] string Name,
-    Guid ModelId,
-    Guid MotorizationId,
+    [Required] Guid ModelId,
+    [Required] Guid MotorizationId,
     IReadOnlyList<Guid> OptionIds);
 
 public record UpdateConfigurationRequest(
     [Required, MinLength(2), MaxLength(60)] string Name,
-    Guid ModelId,
-    Guid MotorizationId,
+    [Required] Guid ModelId,
+    [Required] Guid MotorizationId,
     IReadOnlyList<Guid> OptionIds);

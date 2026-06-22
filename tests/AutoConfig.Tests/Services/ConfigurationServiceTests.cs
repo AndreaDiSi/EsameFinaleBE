@@ -1,5 +1,6 @@
 using AutoConfig.Core.Entities;
 using AutoConfig.Core.Exceptions;
+using AutoConfig.Core.Interfaces;
 using AutoConfig.Infrastructure.Data;
 using AutoConfig.Infrastructure.Repositories;
 using AutoConfig.Infrastructure.Services;
@@ -109,7 +110,7 @@ public class ConfigurationServiceTests
         var (_, model, mot, config) = await TestDataBuilder.SeedBasicConfigAsync(_db);
         var otherUserId = Guid.NewGuid();
 
-        await _sut.Invoking(s => s.UpdateAsync(config.Id, otherUserId, false, "Hacked", model.Id, mot.Id, []))
+        await _sut.Invoking(s => s.UpdateAsync(config.Id, otherUserId, false, new UpdateConfigurationCommand("Hacked", model.Id, mot.Id, [])))
             .Should().ThrowAsync<ForbiddenException>();
     }
 
@@ -119,7 +120,7 @@ public class ConfigurationServiceTests
         Setup();
         var (_, model, mot, config) = await TestDataBuilder.SeedBasicConfigAsync(_db);
 
-        var updated = await _sut.UpdateAsync(config.Id, Guid.NewGuid(), isAdmin: true, "Updated", model.Id, mot.Id, []);
+        var updated = await _sut.UpdateAsync(config.Id, Guid.NewGuid(), isAdmin: true, new UpdateConfigurationCommand("Updated", model.Id, mot.Id, []));
 
         updated.Name.Should().Be("Updated");
     }
