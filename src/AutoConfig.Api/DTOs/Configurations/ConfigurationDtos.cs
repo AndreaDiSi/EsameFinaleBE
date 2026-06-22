@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AutoConfig.Api.DTOs.Configurations;
 
@@ -11,12 +12,12 @@ public record ConfigurationDto(
 
 public record CreateConfigurationRequest(
     [Required, MinLength(2), MaxLength(60)] string Name,
-    [Required] Guid ModelId,
-    [Required] Guid MotorizationId,
+    [property: JsonRequired][Required] Guid ModelId,
+    [property: JsonRequired][Required] Guid MotorizationId,
     IReadOnlyList<Guid> OptionIds);
 
 public record UpdateConfigurationRequest(
     [Required, MinLength(2), MaxLength(60)] string Name,
-    [Required] Guid ModelId,
-    [Required] Guid MotorizationId,
+    [property: JsonRequired][Required] Guid ModelId,
+    [property: JsonRequired][Required] Guid MotorizationId,
     IReadOnlyList<Guid> OptionIds);

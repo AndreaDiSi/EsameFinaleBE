@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AutoConfig.Api.DTOs.Quotes;
 
@@ -10,10 +11,10 @@ public record QuoteDto(
     string? ConfigurationName = null);
 
 public record CreateQuoteRequest(
-    [Required] Guid ConfigurationId,
+    [property: JsonRequired][Required] Guid ConfigurationId,
     [MaxLength(500)] string Notes = "");
 
 public record UpdateQuoteAdminRequest(
     [Required] string Status,
-    [Required, Range(0, 50)] decimal Discount,
+    [property: JsonRequired][Required, Range(0, 50)] decimal Discount,
     [MaxLength(500)] string AdminNotes = "");
