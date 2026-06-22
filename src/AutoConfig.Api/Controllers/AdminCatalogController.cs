@@ -29,7 +29,7 @@ public class AdminCatalogController(ICarModelRepository models) : ControllerBase
         };
 
         await models.AddAsync(model, ct);
-        return CreatedAtAction("GetModel", "Catalog", new { id = model.Id }, model.ToDto());
+        return CreatedAtAction("GetModel", "CarModels", new { id = model.Id }, model.ToDto());
     }
 
     [HttpPut("models/{id:guid}")]
@@ -71,6 +71,6 @@ public class AdminCatalogController(ICarModelRepository models) : ControllerBase
         };
 
         await models.AddMotorizationAsync(mot, ct);
-        return CreatedAtAction("GetMotorizations", "Catalog", new { modelId }, mot.ToDto());
+        return CreatedAtAction("GetMotorizations", "CarModels", new { modelId }, mot.ToDto());
     }
 }

@@ -8,7 +8,7 @@ namespace AutoConfig.Api.Controllers;
 
 [ApiController]
 [Route("api/catalog")]
-public class CatalogController(ICarModelRepository models, ICarOptionRepository options) : ControllerBase
+public class CarModelsController(ICarModelRepository models) : ControllerBase
 {
     private const string CarModelEntity = "CarModel";
 
@@ -27,8 +27,4 @@ public class CatalogController(ICarModelRepository models, ICarOptionRepository 
     [HttpGet("models/{modelId:guid}/motorizations")]
     public async Task<IReadOnlyList<MotorizationDto>> GetMotorizations(Guid modelId, CancellationToken ct) =>
         (await models.GetMotorizationsByModelAsync(modelId, ct)).Select(m => m.ToDto()).ToList();
-
-    [HttpGet("options")]
-    public async Task<IReadOnlyList<CarOptionDto>> GetOptions(CancellationToken ct) =>
-        (await options.GetAllWithIncompatibilitiesAsync(ct)).Select(o => o.ToDto()).ToList();
 }

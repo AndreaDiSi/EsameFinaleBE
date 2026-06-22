@@ -10,6 +10,9 @@ public class CatalogIntegrationTests : IClassFixture<WebAppFactory>
 {
     private readonly HttpClient _client;
 
+    // Seeded BMW Serie 3 (DbSeeder)
+    private static readonly Guid SeededModelId = Guid.Parse("11111111-0000-0000-0000-000000000001");
+
     public CatalogIntegrationTests(WebAppFactory factory) =>
         _client = factory.CreateClient();
 
@@ -63,5 +66,37 @@ public class CatalogIntegrationTests : IClassFixture<WebAppFactory>
         });
 
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task GetModel_ById_NoAuth_Returns200WithMotorizations()
+    {
+        var response = await _client.GetAsync($"/api/catalog/models/{SeededModelId}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var model = await response.Content.ReadFromJsonAsync<CarModelDto>();
+        model.Should().NotBeNull();
+        model!.Id.Should().Be(SeededModelId);
+        model.Name.Should().Be("Serie 3");
+        model.Brand.Should().Be("BMW");
+        model.Motorizations.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task GetModel_NonExistentId_Returns404()
+    {
+        var response = await _client.GetAsync($"/api/catalog/models/{Guid.NewGuid()}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task GetMotorizations_NonExistentModelId_Returns200WithEmptyList()
+    {
+        var response = await _client.GetAsync($"/api/catalog/models/{Guid.NewGuid()}/motorizations");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var mots = await response.Content.ReadFromJsonAsync<List<MotorizationDto>>();
+        mots.Should().BeEmpty();
     }
 }
