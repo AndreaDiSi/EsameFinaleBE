@@ -14,3 +14,7 @@ public record RegisterRequest(
 public record AuthResponse(string Token, UserPayload User);
 
 public record UserPayload(Guid Id, string Email, string Name, string Role, DateTime CreatedAt);
+
+public record UpdateProfileRequest(
+    [Required, MinLength(2)] string Name,
+    [Required, EmailAddress] string Email);
