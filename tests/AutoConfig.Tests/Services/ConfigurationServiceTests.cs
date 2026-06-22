@@ -162,4 +162,94 @@ public class ConfigurationServiceTests
         configs.Should().HaveCount(1);
         configs[0].UserId.Should().Be(user.Id);
     }
+
+    [Fact]
+    public async Task Create_NonExistentOptions_ThrowsValidationException()
+    {
+        Setup();
+        var model = TestDataBuilder.CarModel();
+        var mot = TestDataBuilder.Motorization(model.Id);
+        _db.CarModels.Add(model);
+        _db.Motorizations.Add(mot);
+        await _db.SaveChangesAsync();
+
+        await _sut.Invoking(s => s.CreateAsync(Guid.NewGuid(), "X", model.Id, mot.Id, [Guid.NewGuid()]))
+            .Should().ThrowAsync<Core.Exceptions.ValidationException>();
+    }
+
+    [Fact]
+    public async Task Create_OptionRequiresOtherMotorization_ThrowsValidationException()
+    {
+        Setup();
+        var model = TestDataBuilder.CarModel();
+        var mot1 = TestDataBuilder.Motorization(model.Id);
+        var mot2 = TestDataBuilder.Motorization(model.Id);
+        var opt = TestDataBuilder.Option();
+        opt.RequiredMotorizations.Add(mot2);
+        _db.CarModels.Add(model);
+        _db.Motorizations.AddRange(mot1, mot2);
+        _db.CarOptions.Add(opt);
+        await _db.SaveChangesAsync();
+
+        await _sut.Invoking(s => s.CreateAsync(Guid.NewGuid(), "X", model.Id, mot1.Id, [opt.Id]))
+            .Should().ThrowAsync<Core.Exceptions.ValidationException>();
+    }
+
+    [Fact]
+    public async Task Update_Owner_UpdatesNameAndRecalculatesPrice()
+    {
+        Setup();
+        var (user, model, mot, config) = await TestDataBuilder.SeedBasicConfigAsync(_db);
+        var opt = TestDataBuilder.Option(price: 1500m);
+        _db.CarOptions.Add(opt);
+        await _db.SaveChangesAsync();
+
+        var updated = await _sut.UpdateAsync(config.Id, user.Id, false,
+            new UpdateConfigurationCommand("Nuovo Nome", model.Id, mot.Id, [opt.Id]));
+
+        updated.Name.Should().Be("Nuovo Nome");
+        updated.TotalPrice.Should().Be(model.BasePrice + mot.Price + 1500m);
+    }
+
+    [Fact]
+    public async Task Get_Owner_ReturnsConfiguration()
+    {
+        Setup();
+        var (user, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(_db);
+
+        var result = await _sut.GetAsync(config.Id, user.Id, isAdmin: false);
+
+        result.Id.Should().Be(config.Id);
+    }
+
+    [Fact]
+    public async Task Get_Admin_CanAccessAnyConfiguration()
+    {
+        Setup();
+        var (_, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(_db);
+
+        var result = await _sut.GetAsync(config.Id, Guid.NewGuid(), isAdmin: true);
+
+        result.Id.Should().Be(config.Id);
+    }
+
+    [Fact]
+    public async Task Get_NonExistent_ThrowsNotFoundException()
+    {
+        Setup();
+
+        await _sut.Invoking(s => s.GetAsync(Guid.NewGuid(), Guid.NewGuid(), false))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task Delete_Admin_CanDeleteAnyConfiguration()
+    {
+        Setup();
+        var (_, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(_db);
+
+        await _sut.DeleteAsync(config.Id, Guid.NewGuid(), isAdmin: true);
+
+        _db.Configurations.Find(config.Id).Should().BeNull();
+    }
 }

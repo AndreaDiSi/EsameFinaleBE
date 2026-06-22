@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = AutoConfig.Infrastructure
-build_property.ProjectDir = C:\Users\a.disimone\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Infrastructure\
+build_property.ProjectDir = C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Infrastructure\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

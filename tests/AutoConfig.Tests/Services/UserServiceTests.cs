@@ -76,4 +76,37 @@ public class UserServiceTests
 
         db.Users.Find(user.Id).Should().BeNull();
     }
+
+    [Fact]
+    public async Task Update_SameEmail_DoesNotThrow()
+    {
+        var sut = CreateSut(out var db);
+        var user = TestDataBuilder.RegularUser("same@test.it");
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
+
+        var updated = await sut.UpdateAsync(user.Id, "Nuovo Nome", "same@test.it", Role.User);
+
+        updated.Name.Should().Be("Nuovo Nome");
+        updated.Email.Should().Be("same@test.it");
+    }
+
+    [Fact]
+    public async Task Delete_NonExistent_ThrowsNotFoundException()
+    {
+        var sut = CreateSut(out _);
+
+        await sut.Invoking(s => s.DeleteAsync(Guid.NewGuid()))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task GetAll_NoUsers_ReturnsEmptyList()
+    {
+        var sut = CreateSut(out _);
+
+        var users = await sut.GetAllAsync();
+
+        users.Should().BeEmpty();
+    }
 }

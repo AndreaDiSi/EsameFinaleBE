@@ -116,4 +116,63 @@ public class QuoteServiceTests
         quotes.Should().HaveCount(1);
         quotes[0].UserId.Should().Be(user.Id);
     }
+
+    [Fact]
+    public async Task Get_Owner_ReturnsQuote()
+    {
+        var sut = CreateSut(out var db);
+        var (user, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(db);
+        var quote = await sut.CreateAsync(user.Id, config.Id, "nota test");
+
+        var result = await sut.GetAsync(quote.Id, user.Id, isAdmin: false);
+
+        result.Id.Should().Be(quote.Id);
+    }
+
+    [Fact]
+    public async Task UpdateAdmin_NonExistentQuote_ThrowsNotFoundException()
+    {
+        var sut = CreateSut(out _);
+
+        await sut.Invoking(s => s.UpdateAdminAsync(Guid.NewGuid(), QuoteStatus.Approved, 0m, ""))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task UpdateAdmin_ZeroDiscount_FinalPriceEqualsTotal()
+    {
+        var sut = CreateSut(out var db);
+        var (user, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(db);
+        var quote = await sut.CreateAsync(user.Id, config.Id, "");
+
+        var updated = await sut.UpdateAdminAsync(quote.Id, QuoteStatus.Approved, 0m, "");
+
+        updated.FinalPrice.Should().Be(updated.TotalPrice);
+    }
+
+    [Fact]
+    public async Task Delete_Owner_Succeeds()
+    {
+        var sut = CreateSut(out var db);
+        var (user, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(db);
+        var quote = await sut.CreateAsync(user.Id, config.Id, "");
+
+        await sut.DeleteAsync(quote.Id, user.Id, isAdmin: false);
+
+        await sut.Invoking(s => s.GetAsync(quote.Id, user.Id, isAdmin: false))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task Delete_Admin_CanDeleteAnyQuote()
+    {
+        var sut = CreateSut(out var db);
+        var (user, _, _, config) = await TestDataBuilder.SeedBasicConfigAsync(db);
+        var quote = await sut.CreateAsync(user.Id, config.Id, "");
+
+        await sut.DeleteAsync(quote.Id, Guid.NewGuid(), isAdmin: true);
+
+        await sut.Invoking(s => s.GetAsync(quote.Id, user.Id, isAdmin: false))
+            .Should().ThrowAsync<NotFoundException>();
+    }
 }
