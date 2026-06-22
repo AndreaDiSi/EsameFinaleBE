@@ -12,21 +12,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<VehicleConfiguration> Configurations => Set<VehicleConfiguration>();
     public DbSet<Quote> Quotes => Set<Quote>();
 
-    protected override void OnModelCreating(ModelBuilder mb)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        mb.Entity<User>(e =>
+        modelBuilder.Entity<User>(e =>
         {
             e.HasIndex(u => u.Email).IsUnique();
             e.Property(u => u.Role).HasConversion<string>();
         });
 
-        mb.Entity<CarModel>(e =>
+        modelBuilder.Entity<CarModel>(e =>
             e.Property(m => m.Category).HasConversion<string>());
 
-        mb.Entity<Motorization>(e =>
+        modelBuilder.Entity<Motorization>(e =>
             e.Property(m => m.FuelType).HasConversion<string>());
 
-        mb.Entity<CarOption>(e =>
+        modelBuilder.Entity<CarOption>(e =>
         {
             e.Property(o => o.Category).HasConversion<string>();
 
@@ -39,7 +39,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
              .UsingEntity(j => j.ToTable("OptionMotorizationRequirements"));
         });
 
-        mb.Entity<VehicleConfiguration>(e =>
+        modelBuilder.Entity<VehicleConfiguration>(e =>
         {
             e.HasMany(c => c.Options)
              .WithMany(o => o.Configurations)
@@ -55,7 +55,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
              .HasForeignKey(c => c.MotorizationId).OnDelete(DeleteBehavior.Restrict);
         });
 
-        mb.Entity<Quote>(e =>
+        modelBuilder.Entity<Quote>(e =>
         {
             e.Property(q => q.Status).HasConversion<string>();
 
