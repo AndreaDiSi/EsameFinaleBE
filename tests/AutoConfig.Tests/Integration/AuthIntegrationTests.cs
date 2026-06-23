@@ -95,4 +95,39 @@ public class AuthIntegrationTests : IClassFixture<WebAppFactory>
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
+
+    [Fact]
+    public async Task UpdateProfile_ValidRequest_Returns200WithUpdatedName()
+    {
+        var reg = await _client.PostAsJsonAsync("/api/auth/register",
+            new { Name = "Profile Test", Email = "profile-integration@test.it", Password = "pass123456" });
+        var auth = await reg.Content.ReadFromJsonAsync<AuthResponse>();
+
+        var authedClient = _factory.CreateClient();
+        authedClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth!.Token);
+
+        var response = await authedClient.PutAsJsonAsync("/api/auth/profile", new
+        {
+            Name = "Updated Profile Name",
+            Email = "profile-integration@test.it"
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var payload = await response.Content.ReadFromJsonAsync<UserPayload>();
+        payload!.Name.Should().Be("Updated Profile Name");
+        payload.Email.Should().Be("profile-integration@test.it");
+    }
+
+    [Fact]
+    public async Task UpdateProfile_WithoutAuth_Returns401()
+    {
+        var response = await _client.PutAsJsonAsync("/api/auth/profile", new
+        {
+            Name = "Anon",
+            Email = "anon@test.it"
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
 }

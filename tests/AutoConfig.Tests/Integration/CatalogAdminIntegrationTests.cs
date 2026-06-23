@@ -138,6 +138,22 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
+    [Fact]
+    public async Task UpdateModel_InvalidCategory_Returns422()
+    {
+        var client = await AdminClientAsync();
+        var created = await (await client.PostAsJsonAsync("/api/catalog/models", NewModelPayload("UpdateCat Source")))
+            .Content.ReadFromJsonAsync<CarModelDto>();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/models/{created!.Id}", new
+        {
+            Name = "Updated", Brand = "Brand", Category = "flying_saucer",
+            BasePrice = 10000m, Description = "desc", ImageColor = "#000"
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+    }
+
     // ── DeleteModel ──────────────────────────────────────────────────────────
 
     [Fact]
