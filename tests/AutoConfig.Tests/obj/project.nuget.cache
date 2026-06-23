@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bEYpy4Edo84=",
+  "dgSpecHash": "w/AZ+U/BBpE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\andre\\Desktop\\work\\esamefinale2\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
+  "projectFilePath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",

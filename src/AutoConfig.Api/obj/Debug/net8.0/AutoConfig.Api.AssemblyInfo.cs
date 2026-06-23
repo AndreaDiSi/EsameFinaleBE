@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoConfig.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2fc03cc8644bb7eb1f5dd3e3065ecc35b8996fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b492ec63f9f4763ae6b1b4673c5dcab3c76e37a")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoConfig.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoConfig.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -247,4 +247,337 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+
+    // ── CreateOption ─────────────────────────────────────────────────────────
+
+    private static object NewOptionPayload(string name = "Test Option", string category = "Technology") => new
+    {
+        Name = name,
+        Description = "Integration test option",
+        Category = category,
+        Price = 1000m,
+        Color = (string?)null,
+        IncompatibleWith = Array.Empty<Guid>(),
+        RequiredMotorizationIds = Array.Empty<Guid>()
+    };
+
+    [Fact]
+    public async Task CreateOption_AsAdmin_Returns201WithCarOptionDto()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("New Tech Option"));
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        option.Should().NotBeNull();
+        option!.Name.Should().Be("New Tech Option");
+        option.Category.Should().Be("Technology");
+        option.Price.Should().Be(1000m);
+        option.Color.Should().BeNull();
+        option.IncompatibleWith.Should().BeEmpty();
+        option.RequiredMotorizations.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task CreateOption_WithColor_Returns201AndColorIsSet()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Verde Oliva",
+            Description = "Verde metallizzato",
+            Category = "Color",
+            Price = 1500m,
+            Color = "#556B2F",
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        option!.Color.Should().Be("#556B2F");
+    }
+
+    [Fact]
+    public async Task CreateOption_WithIncompatibleOptions_Returns201WithRelationsSet()
+    {
+        var client = await AdminClientAsync();
+        // opt1 and opt2 from seeder
+        var incompatibleIds = new[]
+        {
+            Guid.Parse("33333333-0000-0000-0000-000000000001"),
+            Guid.Parse("33333333-0000-0000-0000-000000000002")
+        };
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Option With Incompatibles",
+            Description = "Test",
+            Category = "Comfort",
+            Price = 800m,
+            Color = (string?)null,
+            IncompatibleWith = incompatibleIds,
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        option!.IncompatibleWith.Should().BeEquivalentTo(incompatibleIds);
+    }
+
+    [Fact]
+    public async Task CreateOption_WithRequiredMotorizations_Returns201WithRelationsSet()
+    {
+        var client = await AdminClientAsync();
+        // mo1 (BMW 318i) from seeder
+        var motId = Guid.Parse("22222222-0000-0000-0000-000000000001");
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Engine-Specific Option",
+            Description = "Only for BMW 318i",
+            Category = "Technology",
+            Price = 600m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = new[] { motId }
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        option!.RequiredMotorizations.Should().ContainSingle().Which.Should().Be(motId);
+    }
+
+    [Fact]
+    public async Task CreateOption_WithoutAuth_Returns401()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload());
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task CreateOption_AsRegularUser_Returns403()
+    {
+        var client = await UserClientAsync();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload());
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task CreateOption_InvalidCategory_Returns422()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Bad Category Option", Description = "X", Category = "invalid_cat",
+            Price = 100m, Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+    }
+
+    // ── UpdateOption ─────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task UpdateOption_AsAdmin_Returns200WithUpdatedData()
+    {
+        var client = await AdminClientAsync();
+        var created = await (await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("Update Source Option")))
+            .Content.ReadFromJsonAsync<CarOptionDto>();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", new
+        {
+            Name = "Updated Option Name",
+            Description = "Updated description",
+            Category = "Safety",
+            Price = 2500m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        updated!.Name.Should().Be("Updated Option Name");
+        updated.Category.Should().Be("Safety");
+        updated.Price.Should().Be(2500m);
+    }
+
+    [Fact]
+    public async Task UpdateOption_ReplacesIncompatibilities()
+    {
+        var client = await AdminClientAsync();
+        var opt1Id = Guid.Parse("33333333-0000-0000-0000-000000000001");
+        var opt2Id = Guid.Parse("33333333-0000-0000-0000-000000000002");
+
+        // Create with opt1 as incompatible
+        var created = await (await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Incompatibility Replace Test",
+            Description = "Test",
+            Category = "Comfort",
+            Price = 700m,
+            Color = (string?)null,
+            IncompatibleWith = new[] { opt1Id },
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        })).Content.ReadFromJsonAsync<CarOptionDto>();
+
+        // Update replacing opt1 with opt2
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", new
+        {
+            Name = "Incompatibility Replace Test",
+            Description = "Test",
+            Category = "Comfort",
+            Price = 700m,
+            Color = (string?)null,
+            IncompatibleWith = new[] { opt2Id },
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        updated!.IncompatibleWith.Should().ContainSingle().Which.Should().Be(opt2Id);
+        updated.IncompatibleWith.Should().NotContain(opt1Id);
+    }
+
+    [Fact]
+    public async Task UpdateOption_ClearsIncompatibilitiesWhenEmptyListProvided()
+    {
+        var client = await AdminClientAsync();
+        var opt1Id = Guid.Parse("33333333-0000-0000-0000-000000000001");
+
+        var created = await (await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Clear Incompatibilities Test",
+            Description = "Test",
+            Category = "Technology",
+            Price = 500m,
+            Color = (string?)null,
+            IncompatibleWith = new[] { opt1Id },
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        })).Content.ReadFromJsonAsync<CarOptionDto>();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", new
+        {
+            Name = "Clear Incompatibilities Test",
+            Description = "Test",
+            Category = "Technology",
+            Price = 500m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        updated!.IncompatibleWith.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task UpdateOption_WithoutAuth_Returns401()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{Guid.NewGuid()}", NewOptionPayload());
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task UpdateOption_AsRegularUser_Returns403()
+    {
+        var admin = await AdminClientAsync();
+        var created = await (await admin.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("User Cannot Update Option")))
+            .Content.ReadFromJsonAsync<CarOptionDto>();
+
+        var user = await UserClientAsync();
+        var response = await user.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", NewOptionPayload());
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task UpdateOption_NonExistentOption_Returns404()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{Guid.NewGuid()}", NewOptionPayload());
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdateOption_InvalidCategory_Returns422()
+    {
+        var client = await AdminClientAsync();
+        var created = await (await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("Category Update Test")))
+            .Content.ReadFromJsonAsync<CarOptionDto>();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", new
+        {
+            Name = "Category Update Test", Description = "X", Category = "not_a_category",
+            Price = 100m, Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+    }
+
+    // ── DeleteOption ─────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task DeleteOption_AsAdmin_Returns204()
+    {
+        var client = await AdminClientAsync();
+        var created = await (await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("To Delete Option")))
+            .Content.ReadFromJsonAsync<CarOptionDto>();
+
+        var response = await client.DeleteAsync($"/api/catalog/options/{created!.Id}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task DeleteOption_AsRegularUser_Returns403()
+    {
+        var admin = await AdminClientAsync();
+        var created = await (await admin.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("User Cannot Delete Option")))
+            .Content.ReadFromJsonAsync<CarOptionDto>();
+
+        var user = await UserClientAsync();
+        var response = await user.DeleteAsync($"/api/catalog/options/{created!.Id}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task DeleteOption_WithoutAuth_Returns401()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.DeleteAsync($"/api/catalog/options/{Guid.NewGuid()}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task DeleteOption_NonExistentOption_Returns404()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.DeleteAsync($"/api/catalog/options/{Guid.NewGuid()}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 }

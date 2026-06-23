@@ -21,3 +21,15 @@ C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Core\obj\D
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\refint\AutoConfig.Core.dll
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.pdb
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\ref\AutoConfig.Core.dll
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\bin\Debug\net8.0\AutoConfig.Core.deps.json
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\bin\Debug\net8.0\AutoConfig.Core.dll
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\bin\Debug\net8.0\AutoConfig.Core.pdb
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.AssemblyInfoInputs.cache
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.AssemblyInfo.cs
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.csproj.CoreCompileInputs.cache
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.sourcelink.json
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.dll
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\refint\AutoConfig.Core.dll
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\AutoConfig.Core.pdb
+C:\Users\andre\Desktop\esamefinale\EsameFinaleBE\src\AutoConfig.Core\obj\Debug\net8.0\ref\AutoConfig.Core.dll

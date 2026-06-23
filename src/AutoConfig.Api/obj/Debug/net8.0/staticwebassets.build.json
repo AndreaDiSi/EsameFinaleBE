@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "OwsEGl01fHiOFH5s9vVfgMm7ZBgK84gndTa1IjJdy/I=",
-  "Source": "AutoConfig.Api",
-  "BasePath": "_content/AutoConfig.Api",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"TkQdBGsQ5zedm1jWUIGZTTsOhxjFO6oyAs+C49ESyZw=","Source":"AutoConfig.Api","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

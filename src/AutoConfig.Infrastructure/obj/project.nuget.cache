@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sbZB8pa7M5c=",
+  "dgSpecHash": "koqkMjpSY6s=",
   "success": true,
-  "projectFilePath": "C:\\Users\\andre\\Desktop\\work\\esamefinale2\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

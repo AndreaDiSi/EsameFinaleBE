@@ -34,3 +34,12 @@ public record CreateMotorizationRequest(
     [property: JsonRequired][Required, Range(0, 30)] decimal Acceleration,
     [Required] string Consumption,
     [property: JsonRequired][Required, Range(0, double.MaxValue)] decimal Price);
+
+public record CreateCarOptionRequest(
+    [Required, MinLength(2)] string Name,
+    [Required] string Description,
+    [Required] string Category,
+    [property: JsonRequired][Required, Range(0, double.MaxValue)] decimal Price,
+    string? Color,
+    List<Guid> IncompatibleWith,
+    List<Guid> RequiredMotorizationIds);
