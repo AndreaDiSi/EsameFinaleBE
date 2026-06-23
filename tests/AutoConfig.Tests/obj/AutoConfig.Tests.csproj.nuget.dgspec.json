@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj": {}
+    "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj": {}
   },
   "projects": {
     "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj": {
@@ -27,8 +27,8 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
-                "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
+              "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
+                "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
               },
               "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj": {
                 "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj"
@@ -95,14 +95,14 @@
         }
       }
     },
-    "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
+    "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj",
         "projectName": "AutoConfig.Core",
-        "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj",
+        "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj",
         "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\obj\\",
+        "outputPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -179,8 +179,8 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
-                "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
+              "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
+                "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
               }
             }
           }
@@ -241,14 +241,14 @@
         }
       }
     },
-    "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj": {
+    "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
         "projectName": "AutoConfig.Tests",
-        "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
+        "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
         "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\obj\\",
+        "outputPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -267,8 +267,8 @@
               "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj": {
                 "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj"
               },
-              "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
-                "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
+              "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
+                "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
               },
               "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj": {
                 "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj"
