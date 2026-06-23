@@ -3,6 +3,8 @@ using AutoConfig.Infrastructure.Data;
 using AutoConfig.Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
