@@ -14,5 +14,6 @@ RUN dotnet publish "src/AutoConfig.Api/AutoConfig.Api.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+COPY src/AutoConfig.Api/.env .env
 USER app
 ENTRYPOINT ["dotnet", "AutoConfig.Api.dll"]

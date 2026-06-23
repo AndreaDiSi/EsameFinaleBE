@@ -2503,8 +2503,8 @@
           "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
-              "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
+            "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
+              "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
             }
           }
         }
@@ -2564,13 +2564,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
-    }
-  ]
+  }
 }

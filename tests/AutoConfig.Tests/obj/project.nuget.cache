@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SxyjHDyHdNo=",
+  "dgSpecHash": "q1NBiHZxxl4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
+  "projectFilePath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
@@ -159,15 +159,5 @@
     "C:\\Users\\andre\\.nuget\\packages\\xunit.extensibility.execution\\2.5.3\\xunit.extensibility.execution.2.5.3.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\xunit.runner.visualstudio\\2.5.3\\xunit.runner.visualstudio.2.5.3.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "message": "Problem reading the cache file C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

@@ -1275,12 +1275,10 @@ c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debu
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.TestHost.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.Data.Sqlite.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Sqlite.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
@@ -1318,9 +1316,6 @@ c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debu
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Moq.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Newtonsoft.Json.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\NuGet.Frameworks.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\SQLitePCLRaw.batteries_v2.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\SQLitePCLRaw.core.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\SQLitePCLRaw.provider.e_sqlite3.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -1397,26 +1392,6 @@ c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debu
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-arm\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-arm64\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-armel\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-mips64\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-s390x\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-x64\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\linux-x86\native\libe_sqlite3.so
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\osx-x64\native\libe_sqlite3.dylib
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\win-arm\native\e_sqlite3.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\win-arm64\native\e_sqlite3.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\win-x64\native\e_sqlite3.dll
-c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\AutoConfig.Api.dll
@@ -1444,3 +1419,7 @@ C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bi
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\DotNetEnv.dll
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Sprache.dll
 >>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
+c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\DotNetEnv.dll
+c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Npgsql.dll
+c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+c:\Users\andre\Desktop\esamefinale\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Sprache.dll

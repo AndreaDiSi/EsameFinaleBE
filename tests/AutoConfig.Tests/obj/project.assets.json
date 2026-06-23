@@ -8695,11 +8695,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
+      "projectUniqueName": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
       "projectName": "AutoConfig.Tests",
-      "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
+      "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\AutoConfig.Tests.csproj",
       "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\obj\\",
+      "outputPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -8718,8 +8718,8 @@
             "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj": {
               "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj"
             },
-            "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
-              "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
+            "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj": {
+              "projectPath": "c:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Core\\AutoConfig.Core.csproj"
             },
             "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj": {
               "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj"
@@ -8796,13 +8796,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\tests\\AutoConfig.Tests\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
-    }
-  ]
+  }
 }

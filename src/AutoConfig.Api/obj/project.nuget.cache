@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZGW8GEAaIIo=",
+  "dgSpecHash": "JI2LP6eJ9XA=",
   "success": true,
   "projectFilePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj",
   "expectedPackageFiles": [
@@ -136,15 +136,5 @@
     "C:\\Users\\andre\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "message": "Problem reading the cache file C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Api\\AutoConfig.Api.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

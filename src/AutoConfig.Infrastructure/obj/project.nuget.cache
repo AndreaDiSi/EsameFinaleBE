@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Zw9pFCPEz3k=",
+  "dgSpecHash": "Z97YgWVNJH0=",
   "success": true,
   "projectFilePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -52,15 +52,5 @@
     "C:\\Users\\andre\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "message": "Problem reading the cache file C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\andre\\Desktop\\esamefinale\\EsameFinaleBE\\src\\AutoConfig.Infrastructure\\AutoConfig.Infrastructure.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

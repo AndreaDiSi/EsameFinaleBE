@@ -21,14 +21,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:8080"
+    env_file:
+      - src/AutoConfig.Api/.env
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=autoconfig;Username=autoconfig;Password=autoconfig_pass
-      - Jwt__Secret=AutoConfig-SuperSecret-Key-32chars-minimum!!
-      - Jwt__Issuer=AutoConfig.Api
-      - Jwt__Audience=AutoConfig.Client
-      - Jwt__ExpiresInHours=24
-      - AllowedOrigins__0=http://localhost:5173
     depends_on:
       postgres:
         condition: service_healthy
