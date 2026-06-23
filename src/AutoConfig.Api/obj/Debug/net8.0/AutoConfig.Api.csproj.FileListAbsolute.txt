@@ -270,3 +270,5 @@ C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Api\obj\De
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Api\obj\Debug\net8.0\ref\AutoConfig.Api.dll
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Api\bin\Debug\net8.0\Npgsql.dll
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Api\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Api\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\src\AutoConfig.Api\bin\Debug\net8.0\Sprache.dll

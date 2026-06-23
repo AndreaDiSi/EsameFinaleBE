@@ -16,6 +16,10 @@ public class WebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..",
+            "src", "AutoConfig.Api", ".env");
+        DotNetEnv.Env.Load(Path.GetFullPath(envPath));
+
         builder.ConfigureServices(services =>
         {
             var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));

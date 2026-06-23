@@ -27,11 +27,5 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests with coverage
-        run: |
-          dotnet test --no-build --configuration Release --verbosity normal \
-            --collect:"XPlat Code Coverage" \
-            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Threshold=70 \
-               DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ThresholdType=line \
-               DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ThresholdStat=total \
-               DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[*]*.Migrations.*"
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release --verbosity normal

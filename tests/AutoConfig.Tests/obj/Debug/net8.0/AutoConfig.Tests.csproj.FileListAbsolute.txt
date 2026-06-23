@@ -950,3 +950,5 @@ C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\ob
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\obj\Debug\net8.0\ref\AutoConfig.Tests.dll
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Npgsql.dll
 C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\andre\Desktop\work\esamefinale2\EsameFinaleBE\tests\AutoConfig.Tests\bin\Debug\net8.0\Sprache.dll
