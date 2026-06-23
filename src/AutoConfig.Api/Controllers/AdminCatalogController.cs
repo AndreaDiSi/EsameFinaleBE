@@ -12,9 +12,11 @@ namespace AutoConfig.Api.Controllers;
 [ApiController]
 [Route("api/catalog")]
 [Authorize(Roles = "Admin")]
-public class AdminCatalogController(ICarModelRepository models) : ControllerBase
+public class AdminCatalogController(ICarModelRepository models, ICarOptionRepository options) : ControllerBase
 {
     private const string CarModelEntity = "CarModel";
+    private const string MotorizationEntity = "Motorization";
+    private const string CarOptionEntity = "CarOption";
 
     [HttpPost("models")]
     public async Task<ActionResult<CarModelDto>> CreateModel(CreateCarModelRequest req, CancellationToken ct)
@@ -72,5 +74,104 @@ public class AdminCatalogController(ICarModelRepository models) : ControllerBase
 
         await models.AddMotorizationAsync(mot, ct);
         return CreatedAtAction("GetMotorizations", "CarModels", new { modelId }, mot.ToDto());
+    }
+
+    [HttpPut("models/{modelId:guid}/motorizations/{id:guid}")]
+    public async Task<MotorizationDto> UpdateMotorization(Guid modelId, Guid id, CreateMotorizationRequest req, CancellationToken ct)
+    {
+        _ = await models.GetByIdAsync(modelId, ct) ?? throw new NotFoundException(CarModelEntity);
+        var mot = await models.GetMotorizationByIdAsync(id, ct) ?? throw new NotFoundException(MotorizationEntity);
+        if (mot.ModelId != modelId) throw new NotFoundException(MotorizationEntity);
+
+        if (!Enum.TryParse<FuelType>(req.FuelType, ignoreCase: true, out var fuelType))
+            throw new ValidationException("Tipo carburante non valido.");
+
+        mot.Name = req.Name; mot.FuelType = fuelType;
+        mot.Power = req.Power; mot.Torque = req.Torque;
+        mot.Acceleration = req.Acceleration; mot.Consumption = req.Consumption; mot.Price = req.Price;
+
+        await models.UpdateMotorizationAsync(mot, ct);
+        return mot.ToDto();
+    }
+
+    [HttpDelete("models/{modelId:guid}/motorizations/{id:guid}")]
+    public async Task<IActionResult> DeleteMotorization(Guid modelId, Guid id, CancellationToken ct)
+    {
+        _ = await models.GetByIdAsync(modelId, ct) ?? throw new NotFoundException(CarModelEntity);
+        var mot = await models.GetMotorizationByIdAsync(id, ct) ?? throw new NotFoundException(MotorizationEntity);
+        if (mot.ModelId != modelId) throw new NotFoundException(MotorizationEntity);
+
+        await models.DeleteMotorizationAsync(mot, ct);
+        return NoContent();
+    }
+
+    [HttpPost("options")]
+    public async Task<ActionResult<CarOptionDto>> CreateOption(CreateCarOptionRequest req, CancellationToken ct)
+    {
+        if (!Enum.TryParse<OptionCategory>(req.Category, ignoreCase: true, out var category))
+            throw new ValidationException("Categoria optional non valida.");
+
+        var option = new CarOption
+        {
+            Name = req.Name, Description = req.Description,
+            Category = category, Price = req.Price, Color = req.Color
+        };
+
+        if (req.IncompatibleWith?.Count > 0)
+        {
+            var incompatibles = await options.GetByIdsWithIncompatibilitiesAsync(req.IncompatibleWith, ct);
+            foreach (var inc in incompatibles)
+                option.IncompatibleWith.Add(inc);
+        }
+
+        if (req.RequiredMotorizationIds?.Count > 0)
+        {
+            var motorizations = await models.GetMotorizationsByIdsAsync(req.RequiredMotorizationIds, ct);
+            foreach (var m in motorizations)
+                option.RequiredMotorizations.Add(m);
+        }
+
+        await options.AddAsync(option, ct);
+        return StatusCode(201, option.ToDto());
+    }
+
+    [HttpPut("options/{id:guid}")]
+    public async Task<CarOptionDto> UpdateOption(Guid id, CreateCarOptionRequest req, CancellationToken ct)
+    {
+        var option = await options.GetWithIncompatibilitiesAsync(id, ct)
+            ?? throw new NotFoundException(CarOptionEntity);
+
+        if (!Enum.TryParse<OptionCategory>(req.Category, ignoreCase: true, out var category))
+            throw new ValidationException("Categoria optional non valida.");
+
+        option.Name = req.Name; option.Description = req.Description;
+        option.Category = category; option.Price = req.Price; option.Color = req.Color;
+
+        option.IncompatibleWith.Clear();
+        if (req.IncompatibleWith?.Count > 0)
+        {
+            var incompatibles = await options.GetByIdsWithIncompatibilitiesAsync(req.IncompatibleWith, ct);
+            foreach (var inc in incompatibles)
+                option.IncompatibleWith.Add(inc);
+        }
+
+        option.RequiredMotorizations.Clear();
+        if (req.RequiredMotorizationIds?.Count > 0)
+        {
+            var motorizations = await models.GetMotorizationsByIdsAsync(req.RequiredMotorizationIds, ct);
+            foreach (var m in motorizations)
+                option.RequiredMotorizations.Add(m);
+        }
+
+        await options.UpdateAsync(option, ct);
+        return option.ToDto();
+    }
+
+    [HttpDelete("options/{id:guid}")]
+    public async Task<IActionResult> DeleteOption(Guid id, CancellationToken ct)
+    {
+        var option = await options.GetByIdAsync(id, ct) ?? throw new NotFoundException(CarOptionEntity);
+        await options.DeleteAsync(option, ct);
+        return NoContent();
     }
 }
