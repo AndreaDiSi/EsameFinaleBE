@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<AppDbContext>(opt =>
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection")));
+            opt.UseNpgsql(config.GetConnectionString("DefaultConnection")));
 
         services.Configure<JwtSettings>(config.GetSection("Jwt"));
 
