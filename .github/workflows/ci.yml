@@ -28,4 +28,7 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run tests
+        env:
+          Jwt__Secret: "AutoConfig-SuperSecret-Key-32chars-minimum!!"
+          ConnectionStrings__DefaultConnection: "Host=localhost;Database=autoconfig;Username=autoconfig;Password=autoconfig_pass"
         run: dotnet test --no-build --configuration Release --verbosity normal

@@ -124,4 +124,40 @@ public class QuoteIntegrationTests : IClassFixture<WebAppFactory>
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
+
+    [Fact]
+    public async Task GetAll_AsAdmin_Returns200WithAllQuotes()
+    {
+        // Create a quote so the list is non-trivially exercised
+        var (_, configId) = await SetupUserWithConfigAsync();
+        await _factory.CreateClient().PostAsJsonAsync("/api/quotes", new { ConfigurationId = configId, Notes = "" });
+
+        var adminClient = await AuthenticatedClientAsync("admin@autoconfig.it", "admin123");
+        var response = await adminClient.GetAsync("/api/quotes");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var quotes = await response.Content.ReadFromJsonAsync<List<QuoteDto>>();
+        quotes.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task UpdateAdmin_InvalidStatus_Returns422()
+    {
+        var (userClient, configId) = await SetupUserWithConfigAsync();
+        var created = await (await userClient.PostAsJsonAsync("/api/quotes", new
+        {
+            ConfigurationId = configId,
+            Notes = ""
+        })).Content.ReadFromJsonAsync<QuoteDto>();
+
+        var adminClient = await AuthenticatedClientAsync("admin@autoconfig.it", "admin123");
+        var response = await adminClient.PutAsJsonAsync($"/api/quotes/{created!.Id}", new
+        {
+            Status = "flying_saucer",
+            Discount = 0m,
+            AdminNotes = ""
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+    }
 }

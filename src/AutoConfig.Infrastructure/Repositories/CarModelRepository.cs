@@ -19,10 +19,28 @@ public class CarModelRepository(AppDbContext db) : Repository<CarModel>(db), ICa
     public Task<Motorization?> GetMotorizationByIdAsync(Guid id, CancellationToken ct = default) =>
         Db.Motorizations.FindAsync([id], ct).AsTask();
 
+    public async Task<IReadOnlyList<Motorization>> GetMotorizationsByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default)
+    {
+        var idList = ids.ToList();
+        return await Db.Motorizations.Where(m => idList.Contains(m.Id)).ToListAsync(ct);
+    }
+
     public async Task<Motorization> AddMotorizationAsync(Motorization motorization, CancellationToken ct = default)
     {
         await Db.Motorizations.AddAsync(motorization, ct);
         await Db.SaveChangesAsync(ct);
         return motorization;
+    }
+
+    public async Task UpdateMotorizationAsync(Motorization motorization, CancellationToken ct = default)
+    {
+        Db.Motorizations.Update(motorization);
+        await Db.SaveChangesAsync(ct);
+    }
+
+    public async Task DeleteMotorizationAsync(Motorization motorization, CancellationToken ct = default)
+    {
+        Db.Motorizations.Remove(motorization);
+        await Db.SaveChangesAsync(ct);
     }
 }

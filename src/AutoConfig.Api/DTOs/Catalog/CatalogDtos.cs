@@ -41,5 +41,10 @@ public record CreateCarOptionRequest(
     [Required] string Category,
     [property: JsonRequired][Required, Range(0, double.MaxValue)] decimal Price,
     string? Color,
+<<<<<<< HEAD
     List<Guid> IncompatibleWith,
     List<Guid> RequiredMotorizationIds);
+=======
+    IReadOnlyList<Guid>? IncompatibleWith,
+    IReadOnlyList<Guid>? RequiredMotorizationIds);
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0

@@ -129,4 +129,44 @@ public class ConfigurationIntegrationTests : IClassFixture<WebAppFactory>
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
+
+    [Fact]
+    public async Task Get_OtherUsersConfig_Returns403()
+    {
+        // Mario creates a configuration
+        var mario = await AuthenticatedClientAsync("mario@example.com", "mario123");
+        var created = await (await mario.PostAsJsonAsync("/api/configurations", new
+        {
+            Name = "Mario Private Config",
+            ModelId = Model1Id,
+            MotorizationId = Mot1Id,
+            OptionIds = Array.Empty<Guid>()
+        })).Content.ReadFromJsonAsync<ConfigurationDto>();
+
+        // Giulia tries to access it
+        var giulia = await AuthenticatedClientAsync("giulia@example.com", "giulia123");
+        var response = await giulia.GetAsync($"/api/configurations/{created!.Id}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task Create_WithOption_Returns201AndOptionIdIncluded()
+    {
+        // Seeded "Bianco Alpine" option — no required motorizations, no incompatibilities when alone
+        var opt1Id = Guid.Parse("33333333-0000-0000-0000-000000000001");
+        var client = await AuthenticatedClientAsync("mario@example.com", "mario123");
+
+        var response = await client.PostAsJsonAsync("/api/configurations", new
+        {
+            Name = "Config With Color Option",
+            ModelId = Model1Id,
+            MotorizationId = Mot1Id,
+            OptionIds = new[] { opt1Id }
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var config = await response.Content.ReadFromJsonAsync<ConfigurationDto>();
+        config!.OptionIds.Should().ContainSingle().Which.Should().Be(opt1Id);
+    }
 }

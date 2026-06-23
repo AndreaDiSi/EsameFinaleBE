@@ -138,6 +138,22 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
+    [Fact]
+    public async Task UpdateModel_InvalidCategory_Returns422()
+    {
+        var client = await AdminClientAsync();
+        var created = await (await client.PostAsJsonAsync("/api/catalog/models", NewModelPayload("UpdateCat Source")))
+            .Content.ReadFromJsonAsync<CarModelDto>();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/models/{created!.Id}", new
+        {
+            Name = "Updated", Brand = "Brand", Category = "flying_saucer",
+            BasePrice = 10000m, Description = "desc", ImageColor = "#000"
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+    }
+
     // ── DeleteModel ──────────────────────────────────────────────────────────
 
     [Fact]
@@ -248,6 +264,7 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
+<<<<<<< HEAD
     // ── CreateOption ─────────────────────────────────────────────────────────
 
     private static object NewOptionPayload(string name = "Test Option", string category = "Technology") => new
@@ -275,11 +292,242 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         option.Category.Should().Be("Technology");
         option.Price.Should().Be(1000m);
         option.Color.Should().BeNull();
+=======
+    // ── UpdateMotorization ───────────────────────────────────────────────────
+
+    [Fact]
+    public async Task UpdateMotorization_AsAdmin_Returns200WithAllFieldsUpdated()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "UpdateMot Model");
+        var mot = await CreateMotorizationAsync(client, model.Id, "Original Engine");
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{mot.Id}", new
+            {
+                Name = "Updated Engine 3.0T",
+                FuelType = "Diesel",
+                Power = 300,
+                Torque = 600,
+                Acceleration = 5.2m,
+                Consumption = "8.5 L/100km",
+                Price = 9000m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await response.Content.ReadFromJsonAsync<MotorizationDto>();
+        updated!.Name.Should().Be("Updated Engine 3.0T");
+        updated.FuelType.Should().Be("Diesel");
+        updated.Power.Should().Be(300);
+        updated.Torque.Should().Be(600);
+        updated.Acceleration.Should().Be(5.2m);
+        updated.Price.Should().Be(9000m);
+        updated.ModelId.Should().Be(model.Id);
+    }
+
+    [Fact]
+    public async Task UpdateMotorization_InvalidFuelType_Returns422()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "UpdateMot FuelType Model");
+        var mot = await CreateMotorizationAsync(client, model.Id, "Engine FuelType");
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{mot.Id}", new
+            {
+                Name = "Bad", FuelType = "nuclear",
+                Power = 100, Torque = 200, Acceleration = 10m,
+                Consumption = "5.0 L/100km", Price = 0m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+    }
+
+    [Fact]
+    public async Task UpdateMotorization_NonExistentModel_Returns404()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/catalog/models/{Guid.NewGuid()}/motorizations/{Guid.NewGuid()}", new
+            {
+                Name = "X", FuelType = "Petrol",
+                Power = 100, Torque = 200, Acceleration = 10m,
+                Consumption = "5.0 L/100km", Price = 0m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdateMotorization_NonExistentMotorization_Returns404()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "UpdateMot NoMot Model");
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{Guid.NewGuid()}", new
+            {
+                Name = "Ghost", FuelType = "Petrol",
+                Power = 100, Torque = 200, Acceleration = 10m,
+                Consumption = "5.0 L/100km", Price = 0m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdateMotorization_MotorizationBelongsToOtherModel_Returns404()
+    {
+        var client = await AdminClientAsync();
+        var modelA = await CreateModelAsync(client, "UpdateMot ModelA");
+        var modelB = await CreateModelAsync(client, "UpdateMot ModelB");
+        var motOfB = await CreateMotorizationAsync(client, modelB.Id, "Engine of B");
+
+        // Try to update motOfB using modelA's route — should fail
+        var response = await client.PutAsJsonAsync(
+            $"/api/catalog/models/{modelA.Id}/motorizations/{motOfB.Id}", new
+            {
+                Name = "Hijack", FuelType = "Petrol",
+                Power = 100, Torque = 200, Acceleration = 10m,
+                Consumption = "5.0 L/100km", Price = 0m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdateMotorization_AsRegularUser_Returns403()
+    {
+        var admin = await AdminClientAsync();
+        var model = await CreateModelAsync(admin, "UpdateMot User Model");
+        var mot = await CreateMotorizationAsync(admin, model.Id, "Engine User");
+
+        var user = await UserClientAsync();
+        var response = await user.PutAsJsonAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{mot.Id}", new
+            {
+                Name = "Hijack", FuelType = "Petrol",
+                Power = 100, Torque = 200, Acceleration = 10m,
+                Consumption = "5.0 L/100km", Price = 0m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task UpdateMotorization_WithoutAuth_Returns401()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/catalog/models/{Guid.NewGuid()}/motorizations/{Guid.NewGuid()}", new
+            {
+                Name = "X", FuelType = "Petrol",
+                Power = 100, Torque = 200, Acceleration = 10m,
+                Consumption = "5.0 L/100km", Price = 0m
+            });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    // ── DeleteMotorization ───────────────────────────────────────────────────
+
+    [Fact]
+    public async Task DeleteMotorization_AsAdmin_Returns204()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "DeleteMot Model");
+        var mot = await CreateMotorizationAsync(client, model.Id, "Engine To Delete");
+
+        var response = await client.DeleteAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{mot.Id}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task DeleteMotorization_NonExistentMotorization_Returns404()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "DeleteMot NoMot Model");
+
+        var response = await client.DeleteAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{Guid.NewGuid()}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task DeleteMotorization_MotorizationBelongsToOtherModel_Returns404()
+    {
+        var client = await AdminClientAsync();
+        var modelA = await CreateModelAsync(client, "DeleteMot ModelA");
+        var modelB = await CreateModelAsync(client, "DeleteMot ModelB");
+        var motOfB = await CreateMotorizationAsync(client, modelB.Id, "Engine of B Del");
+
+        // Try to delete motOfB using modelA's route — should fail
+        var response = await client.DeleteAsync(
+            $"/api/catalog/models/{modelA.Id}/motorizations/{motOfB.Id}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task DeleteMotorization_AsRegularUser_Returns403()
+    {
+        var admin = await AdminClientAsync();
+        var model = await CreateModelAsync(admin, "DeleteMot User Model");
+        var mot = await CreateMotorizationAsync(admin, model.Id, "Engine No Delete");
+
+        var user = await UserClientAsync();
+        var response = await user.DeleteAsync(
+            $"/api/catalog/models/{model.Id}/motorizations/{mot.Id}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task DeleteMotorization_WithoutAuth_Returns401()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.DeleteAsync(
+            $"/api/catalog/models/{Guid.NewGuid()}/motorizations/{Guid.NewGuid()}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    // ── CreateOption ─────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task CreateOption_AsAdmin_Returns201WithCorrectData()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Tetto Panoramico",
+            Description = "Tetto apribile in vetro",
+            Category = "Comfort",
+            Price = 1500m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+        option!.Name.Should().Be("Tetto Panoramico");
+        option.Category.Should().Be("Comfort");
+        option.Price.Should().Be(1500m);
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
         option.IncompatibleWith.Should().BeEmpty();
         option.RequiredMotorizations.Should().BeEmpty();
     }
 
     [Fact]
+<<<<<<< HEAD
     public async Task CreateOption_WithColor_Returns201AndColorIsSet()
     {
         var client = await AdminClientAsync();
@@ -319,11 +567,30 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
             Price = 800m,
             Color = (string?)null,
             IncompatibleWith = incompatibleIds,
+=======
+    public async Task CreateOption_WithIncompatibilities_StoresRelations()
+    {
+        var client = await AdminClientAsync();
+
+        // Create two existing options to be incompatible with
+        var optB = await CreateOptionAsync(client, "Incompatible B");
+        var optC = await CreateOptionAsync(client, "Incompatible C");
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Option With Incompatibilities",
+            Description = "desc",
+            Category = "Color",
+            Price = 800m,
+            Color = "#FF0000",
+            IncompatibleWith = new[] { optB.Id, optC.Id },
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
             RequiredMotorizationIds = Array.Empty<Guid>()
         });
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
         var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+<<<<<<< HEAD
         option!.IncompatibleWith.Should().BeEquivalentTo(incompatibleIds);
     }
 
@@ -343,10 +610,34 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
             Color = (string?)null,
             IncompatibleWith = Array.Empty<Guid>(),
             RequiredMotorizationIds = new[] { motId }
+=======
+        option!.IncompatibleWith.Should().HaveCount(2)
+            .And.Contain(optB.Id)
+            .And.Contain(optC.Id);
+    }
+
+    [Fact]
+    public async Task CreateOption_WithRequiredMotorizations_StoresRelations()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "CreateOpt Mot Model");
+        var mot = await CreateMotorizationAsync(client, model.Id, "Required Engine");
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Option With Required Mot",
+            Description = "desc",
+            Category = "Technology",
+            Price = 2000m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = new[] { mot.Id }
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
         });
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
         var option = await response.Content.ReadFromJsonAsync<CarOptionDto>();
+<<<<<<< HEAD
         option!.RequiredMotorizations.Should().ContainSingle().Which.Should().Be(motId);
     }
 
@@ -368,6 +659,10 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         var response = await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload());
 
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+=======
+        option!.RequiredMotorizations.Should().HaveCount(1)
+            .And.Contain(mot.Id);
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
     }
 
     [Fact]
@@ -377,8 +672,16 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
 
         var response = await client.PostAsJsonAsync("/api/catalog/options", new
         {
+<<<<<<< HEAD
             Name = "Bad Category Option", Description = "X", Category = "invalid_cat",
             Price = 100m, Color = (string?)null,
+=======
+            Name = "Bad Category Option",
+            Description = "desc",
+            Category = "flying_saucer",
+            Price = 100m,
+            Color = (string?)null,
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
             IncompatibleWith = Array.Empty<Guid>(),
             RequiredMotorizationIds = Array.Empty<Guid>()
         });
@@ -386,6 +689,7 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
     }
 
+<<<<<<< HEAD
     // ── UpdateOption ─────────────────────────────────────────────────────────
 
     [Fact]
@@ -396,11 +700,64 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
             .Content.ReadFromJsonAsync<CarOptionDto>();
 
         var response = await client.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", new
+=======
+    [Fact]
+    public async Task CreateOption_AsRegularUser_Returns403()
+    {
+        var user = await UserClientAsync();
+
+        var response = await user.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "User Option",
+            Description = "desc",
+            Category = "Comfort",
+            Price = 100m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
+    public async Task CreateOption_WithoutAuth_Returns401()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Anon Option",
+            Description = "desc",
+            Category = "Comfort",
+            Price = 100m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    // ── UpdateOption ─────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task UpdateOption_AsAdmin_Returns200WithUpdatedFields()
+    {
+        var client = await AdminClientAsync();
+        var opt = await CreateOptionAsync(client, "Original Option Name");
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{opt.Id}", new
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
         {
             Name = "Updated Option Name",
             Description = "Updated description",
             Category = "Safety",
+<<<<<<< HEAD
             Price = 2500m,
+=======
+            Price = 3000m,
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
             Color = (string?)null,
             IncompatibleWith = Array.Empty<Guid>(),
             RequiredMotorizationIds = Array.Empty<Guid>()
@@ -409,14 +766,21 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var updated = await response.Content.ReadFromJsonAsync<CarOptionDto>();
         updated!.Name.Should().Be("Updated Option Name");
+<<<<<<< HEAD
         updated.Category.Should().Be("Safety");
         updated.Price.Should().Be(2500m);
+=======
+        updated.Description.Should().Be("Updated description");
+        updated.Category.Should().Be("Safety");
+        updated.Price.Should().Be(3000m);
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
     }
 
     [Fact]
     public async Task UpdateOption_ReplacesIncompatibilities()
     {
         var client = await AdminClientAsync();
+<<<<<<< HEAD
         var opt1Id = Guid.Parse("33333333-0000-0000-0000-000000000001");
         var opt2Id = Guid.Parse("33333333-0000-0000-0000-000000000002");
 
@@ -471,10 +835,76 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         {
             Name = "Clear Incompatibilities Test",
             Description = "Test",
+=======
+        var optB = await CreateOptionAsync(client, "Inc Replace B");
+        var optC = await CreateOptionAsync(client, "Inc Replace C");
+
+        // Create optA incompatible with optB
+        var createResp = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Option Inc Replace A",
+            Description = "desc",
+            Category = "Color",
+            Price = 100m,
+            Color = "#FF0000",
+            IncompatibleWith = new[] { optB.Id },
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+        var optA = await createResp.Content.ReadFromJsonAsync<CarOptionDto>();
+        optA!.IncompatibleWith.Should().Contain(optB.Id);
+
+        // Update optA to be incompatible with optC instead
+        var updateResp = await client.PutAsJsonAsync($"/api/catalog/options/{optA.Id}", new
+        {
+            Name = "Option Inc Replace A",
+            Description = "desc",
+            Category = "Color",
+            Price = 100m,
+            Color = "#FF0000",
+            IncompatibleWith = new[] { optC.Id },
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        updateResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResp.Content.ReadFromJsonAsync<CarOptionDto>();
+        updated!.IncompatibleWith.Should().ContainSingle()
+            .Which.Should().Be(optC.Id);
+        updated.IncompatibleWith.Should().NotContain(optB.Id);
+    }
+
+    [Fact]
+    public async Task UpdateOption_ReplacesRequiredMotorizations()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "UpdateOpt Mot Model");
+        var mot1 = await CreateMotorizationAsync(client, model.Id, "Mot1 Replace");
+        var mot2 = await CreateMotorizationAsync(client, model.Id, "Mot2 Replace");
+
+        // Create option requiring mot1
+        var createResp = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Option Mot Replace",
+            Description = "desc",
             Category = "Technology",
             Price = 500m,
             Color = (string?)null,
             IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = new[] { mot1.Id }
+        });
+        var opt = await createResp.Content.ReadFromJsonAsync<CarOptionDto>();
+        opt!.RequiredMotorizations.Should().Contain(mot1.Id);
+
+        // Update option to require mot2 instead
+        var updateResp = await client.PutAsJsonAsync($"/api/catalog/options/{opt.Id}", new
+        {
+            Name = "Option Mot Replace",
+            Description = "desc",
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
+            Category = "Technology",
+            Price = 500m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+<<<<<<< HEAD
             RequiredMotorizationIds = Array.Empty<Guid>()
         });
 
@@ -514,18 +944,78 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         var response = await client.PutAsJsonAsync($"/api/catalog/options/{Guid.NewGuid()}", NewOptionPayload());
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+=======
+            RequiredMotorizationIds = new[] { mot2.Id }
+        });
+
+        updateResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResp.Content.ReadFromJsonAsync<CarOptionDto>();
+        updated!.RequiredMotorizations.Should().ContainSingle()
+            .Which.Should().Be(mot2.Id);
+        updated.RequiredMotorizations.Should().NotContain(mot1.Id);
+    }
+
+    [Fact]
+    public async Task UpdateOption_ClearsRelationsWhenEmptyListProvided()
+    {
+        var client = await AdminClientAsync();
+        var model = await CreateModelAsync(client, "UpdateOpt Clear Model");
+        var mot = await CreateMotorizationAsync(client, model.Id, "Mot Clear");
+        var otherOpt = await CreateOptionAsync(client, "Inc Clear Other");
+
+        // Create option with relations
+        var createResp = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = "Option To Clear",
+            Description = "desc",
+            Category = "Interior",
+            Price = 600m,
+            Color = (string?)null,
+            IncompatibleWith = new[] { otherOpt.Id },
+            RequiredMotorizationIds = new[] { mot.Id }
+        });
+        var opt = await createResp.Content.ReadFromJsonAsync<CarOptionDto>();
+        opt!.IncompatibleWith.Should().NotBeEmpty();
+        opt.RequiredMotorizations.Should().NotBeEmpty();
+
+        // Update with empty lists to clear all relations
+        var updateResp = await client.PutAsJsonAsync($"/api/catalog/options/{opt.Id}", new
+        {
+            Name = "Option To Clear",
+            Description = "desc",
+            Category = "Interior",
+            Price = 600m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        updateResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResp.Content.ReadFromJsonAsync<CarOptionDto>();
+        updated!.IncompatibleWith.Should().BeEmpty();
+        updated.RequiredMotorizations.Should().BeEmpty();
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
     }
 
     [Fact]
     public async Task UpdateOption_InvalidCategory_Returns422()
     {
         var client = await AdminClientAsync();
+<<<<<<< HEAD
         var created = await (await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("Category Update Test")))
             .Content.ReadFromJsonAsync<CarOptionDto>();
 
         var response = await client.PutAsJsonAsync($"/api/catalog/options/{created!.Id}", new
         {
             Name = "Category Update Test", Description = "X", Category = "not_a_category",
+=======
+        var opt = await CreateOptionAsync(client, "UpdateOpt BadCat");
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{opt.Id}", new
+        {
+            Name = "ValidName", Description = "desc",
+            Category = "not_a_category",
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
             Price = 100m, Color = (string?)null,
             IncompatibleWith = Array.Empty<Guid>(),
             RequiredMotorizationIds = Array.Empty<Guid>()
@@ -534,16 +1024,61 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
     }
 
+<<<<<<< HEAD
+=======
+    [Fact]
+    public async Task UpdateOption_NonExistentOption_Returns404()
+    {
+        var client = await AdminClientAsync();
+
+        var response = await client.PutAsJsonAsync($"/api/catalog/options/{Guid.NewGuid()}", new
+        {
+            Name = "Ghost", Description = "desc",
+            Category = "Comfort",
+            Price = 100m, Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdateOption_AsRegularUser_Returns403()
+    {
+        var admin = await AdminClientAsync();
+        var opt = await CreateOptionAsync(admin, "UpdateOpt User Opt");
+
+        var user = await UserClientAsync();
+        var response = await user.PutAsJsonAsync($"/api/catalog/options/{opt.Id}", new
+        {
+            Name = "Hijack", Description = "desc",
+            Category = "Comfort",
+            Price = 100m, Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
     // ── DeleteOption ─────────────────────────────────────────────────────────
 
     [Fact]
     public async Task DeleteOption_AsAdmin_Returns204()
     {
         var client = await AdminClientAsync();
+<<<<<<< HEAD
         var created = await (await client.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("To Delete Option")))
             .Content.ReadFromJsonAsync<CarOptionDto>();
 
         var response = await client.DeleteAsync($"/api/catalog/options/{created!.Id}");
+=======
+        var opt = await CreateOptionAsync(client, "DeleteOpt Option");
+
+        var response = await client.DeleteAsync($"/api/catalog/options/{opt.Id}");
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
@@ -552,11 +1087,18 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
     public async Task DeleteOption_AsRegularUser_Returns403()
     {
         var admin = await AdminClientAsync();
+<<<<<<< HEAD
         var created = await (await admin.PostAsJsonAsync("/api/catalog/options", NewOptionPayload("User Cannot Delete Option")))
             .Content.ReadFromJsonAsync<CarOptionDto>();
 
         var user = await UserClientAsync();
         var response = await user.DeleteAsync($"/api/catalog/options/{created!.Id}");
+=======
+        var opt = await CreateOptionAsync(admin, "DeleteOpt User Opt");
+
+        var user = await UserClientAsync();
+        var response = await user.DeleteAsync($"/api/catalog/options/{opt.Id}");
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
 
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
@@ -580,4 +1122,45 @@ public class CatalogAdminIntegrationTests : IClassFixture<WebAppFactory>
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+<<<<<<< HEAD
+=======
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    private async Task<CarModelDto> CreateModelAsync(HttpClient client, string name)
+    {
+        var resp = await client.PostAsJsonAsync("/api/catalog/models", NewModelPayload(name));
+        return (await resp.Content.ReadFromJsonAsync<CarModelDto>())!;
+    }
+
+    private static async Task<MotorizationDto> CreateMotorizationAsync(HttpClient client, Guid modelId, string name)
+    {
+        var resp = await client.PostAsJsonAsync($"/api/catalog/models/{modelId}/motorizations", new
+        {
+            Name = name,
+            FuelType = "Petrol",
+            Power = 150,
+            Torque = 300,
+            Acceleration = 8.0m,
+            Consumption = "6.0 L/100km",
+            Price = 3000m
+        });
+        return (await resp.Content.ReadFromJsonAsync<MotorizationDto>())!;
+    }
+
+    private static async Task<CarOptionDto> CreateOptionAsync(HttpClient client, string name)
+    {
+        var resp = await client.PostAsJsonAsync("/api/catalog/options", new
+        {
+            Name = name,
+            Description = "Helper option",
+            Category = "Technology",
+            Price = 500m,
+            Color = (string?)null,
+            IncompatibleWith = Array.Empty<Guid>(),
+            RequiredMotorizationIds = Array.Empty<Guid>()
+        });
+        return (await resp.Content.ReadFromJsonAsync<CarOptionDto>())!;
+    }
+>>>>>>> 83139a211c7e1e4b4cf7931d99d8ba26ade67cb0
 }
